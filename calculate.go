@@ -99,14 +99,15 @@ func calculateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	rezults := calculateResult(calculate)
-	resultsFile, err := os.OpenFile("results.csv", os.O_RDWR|os.O_CREATE, 0644)
+
+	resultsFile, err := os.OpenFile("results.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
 	defer resultsFile.Close()
 
-	// Создаем writer для файла results.csv
 	resultsWriter := csv.NewWriter(resultsFile)
 
 	// Записываем результат в файл
